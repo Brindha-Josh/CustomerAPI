@@ -9,7 +9,7 @@ using CUSTOMERAPISQL.Models;
 
 namespace CUSTOMERAPISQL.Controllers
 {
-    [Route("api/[controller]")]
+    //[Route("api/[controller]")]
     [ApiController]
     public class CustomersController : ControllerBase
     {
@@ -22,13 +22,16 @@ namespace CUSTOMERAPISQL.Controllers
 
         // GET: api/Customers
         [HttpGet]
+        [Route("api/Customers")]
         public async Task<ActionResult<IEnumerable<Customers>>> GetCustomers()
         {
             return await _context.Customers.ToListAsync();
         }
 
         // GET: api/Customers/5
-        [HttpGet("{id}")]
+        //[HttpGet("{id}")]
+        [HttpGet]
+        [Route("api/Customers/Details/{id}")]
         public async Task<ActionResult<Customers>> GetCustomers(int id)
         {
             var customers = await _context.Customers.FindAsync(id);
@@ -44,7 +47,9 @@ namespace CUSTOMERAPISQL.Controllers
         // PUT: api/Customers/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
-        [HttpPut("{id}")]
+        //[HttpPut("{id}")]
+        [HttpPut]
+        [Route("api/Customers/Edit/{id}")]
         public async Task<IActionResult> PutCustomers(int id, Customers customers)
         {
             if (id != customers.Id)
@@ -76,7 +81,9 @@ namespace CUSTOMERAPISQL.Controllers
         // POST: api/Customers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
+        //[HttpPost]
         [HttpPost]
+        [Route("api/Customers/Create")]
         public async Task<ActionResult<Customers>> PostCustomers(Customers customers)
         {
             _context.Customers.Add(customers);
@@ -100,7 +107,9 @@ namespace CUSTOMERAPISQL.Controllers
         }
 
         // DELETE: api/Customers/5
-        [HttpDelete("{id}")]
+        //[HttpDelete("{id}")]
+        [HttpDelete]
+        [Route("api/Customers/Delete/{id}")]
         public async Task<ActionResult<Customers>> DeleteCustomers(int id)
         {
             var customers = await _context.Customers.FindAsync(id);
