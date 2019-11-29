@@ -21,6 +21,7 @@ namespace CUSTOMERAPISQL.Controllers
         }
 
         // GET: api/Customers
+        //getting customers
         [HttpGet]
         [Route("api/Customers")]
         public async Task<ActionResult<IEnumerable<Customers>>> GetCustomers()
