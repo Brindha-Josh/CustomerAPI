@@ -29,6 +29,7 @@ namespace CUSTOMERAPISQL.Controllers
         }
 
         // GET: api/Customer1/5
+        //Get Specific Person
         [HttpGet("{id}")]
         [Route("api/Customer1/Details/{id}")]
         public async Task<ActionResult<Customer1>> GetCustomer1(int id)
