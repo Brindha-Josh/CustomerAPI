@@ -29,8 +29,8 @@ namespace CUSTOMERAPISQL.Controllers
         }
 
         // GET: api/Customers/5
-        //[HttpGet("{id}")]
-        [HttpGet]
+        [HttpGet("{id}")]
+       // [HttpGet]
         [Route("api/Customers/Details/{id}")]
         public async Task<ActionResult<Customers>> GetCustomers(int id)
         {
@@ -47,8 +47,8 @@ namespace CUSTOMERAPISQL.Controllers
         // PUT: api/Customers/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
-        //[HttpPut("{id}")]
-        [HttpPut]
+        [HttpPut("{id}")]
+       // [HttpPut]
         [Route("api/Customers/Edit/{id}")]
         public async Task<IActionResult> PutCustomers(int id, Customers customers)
         {
@@ -107,9 +107,9 @@ namespace CUSTOMERAPISQL.Controllers
         }
 
         // DELETE: api/Customers/5
-        //[HttpDelete("{id}")]
-        [HttpDelete]
-        [Route("api/Customers/Delete/{id}")]
+        [HttpDelete("{id}")]
+        //[HttpDelete]
+        [Route("api/Customers/Del/{id}")]
         public async Task<ActionResult<Customers>> DeleteCustomers(int id)
         {
             var customers = await _context.Customers.FindAsync(id);

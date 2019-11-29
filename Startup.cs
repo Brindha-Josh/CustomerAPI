@@ -12,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+//using System.Web.Http.Cors;
 
 namespace CUSTOMERAPISQL
 {
@@ -27,7 +28,18 @@ namespace CUSTOMERAPISQL
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(builder =>
+                {
+                    builder.WithOrigins("*")
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
+
+                });
+            });
             services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson();
             services.AddDbContext<PersonDBContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("PersonDB")));
         }
@@ -39,7 +51,7 @@ namespace CUSTOMERAPISQL
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            app.UseCors();
             app.UseHttpsRedirection();
 
             app.UseRouting();
@@ -50,6 +62,7 @@ namespace CUSTOMERAPISQL
             {
                 endpoints.MapControllers();
             });
+           
         }
     }
 }

@@ -15,7 +15,7 @@ namespace CUSTOMERAPISQL.Models
         {
         }
 
-
+        public virtual DbSet<Customer1> Customer1 { get; set; }
         public virtual DbSet<Customers> Customers { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -28,6 +28,17 @@ namespace CUSTOMERAPISQL.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Customer1>(entity =>
+            {
+                entity.Property(e => e.Address)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Name)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+            });
+
             modelBuilder.Entity<Customers>(entity =>
             {
                 entity.ToTable("CUSTOMERS");
