@@ -6,20 +6,57 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using CUSTOMERAPISQL.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using System.Text;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace CUSTOMERAPISQL.Controllers
 {
+
     //[Route("api/[controller]")]
     [ApiController]
     public class Customer1Controller : ControllerBase
     {
-        private readonly PersonDBContext _context;
-
-        public Customer1Controller(PersonDBContext context)
+        private IConfiguration _config;
+        public Customer1Controller(IConfiguration config, PersonDBContext context)
         {
-            _context = context;
+            _config = config;
+              _context = context;
         }
-
+        public IActionResult Login(string username, string pass)
+        {
+            Customer1 login = new Customer1();
+            login.UserName = username;
+            login.Password = pass;
+            IActionResult response = Unauthorized();
+            var user = AuthenticateUser(login);
+            if (user!=null)
+            {
+                var tokenStr = GenerateJSONWebToken(user);
+                response = Ok(new { token = tokenStr });
+            }
+            return response;
+        }
+        private Customer1 AuthenticateUser(Customer1 login)
+        {
+            Customer1 user = null;
+            if (login.UserName=="user" && login.Password=="user")
+            {
+                user = new Customer1 { UserName = "user", emailAdd = "brindhamaniam@gmail.com", Password = "user" };
+            }
+            return user;
+        }
+        private readonly PersonDBContext _context;
+       
+        //public Customer1Controller(PersonDBContext context)
+        //{
+        //    _context = context;
+        //}
+        [AllowAnonymous]
         // GET: api/Customer1
         [HttpGet]
         [Route("api/Customer1")]
@@ -27,7 +64,7 @@ namespace CUSTOMERAPISQL.Controllers
         {
             return await _context.Customer1.ToListAsync();
         }
-
+        [AllowAnonymous]
         // GET: api/Customer1/5
         //Get Specific Person
         [HttpGet("{id}")]
@@ -47,6 +84,7 @@ namespace CUSTOMERAPISQL.Controllers
         // PUT: api/Customer1/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
+        [Authorize]
         [HttpPut("{id}")]
         [Route("api/Customer1/Edit/{id}")]
         public async Task<IActionResult> PutCustomer1(int id, Customer1 customer1)
@@ -80,6 +118,7 @@ namespace CUSTOMERAPISQL.Controllers
         // POST: api/Customer1
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
+        [Authorize]
         [HttpPost]
         [Route("api/Customer1/Create")]
         public async Task<ActionResult<Customer1>> PostCustomer1(Customer1 customer1)
@@ -90,7 +129,7 @@ namespace CUSTOMERAPISQL.Controllers
             return CreatedAtAction("GetCustomer1", new { id = customer1.Id }, customer1);
            
         }
-
+        [Authorize]
         // DELETE: api/Customer1/5
         [HttpDelete("{id}")]
         [Route("api/Customer1/Del/{id}")]
@@ -111,6 +150,25 @@ namespace CUSTOMERAPISQL.Controllers
         private bool Customer1Exists(int id)
         {
             return _context.Customer1.Any(e => e.Id == id);
+        }
+        private string GenerateJSONWebToken(Customer1 userinfo)
+        {
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
+            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+            var claims = new[]
+            {
+                new Claim(JwtRegisteredClaimNames.Sub,userinfo.UserName),
+                new Claim(JwtRegisteredClaimNames.Email,userinfo.emailAdd),
+                new Claim(JwtRegisteredClaimNames.Jti,Guid.NewGuid().ToString())
+            };
+            var token = new JwtSecurityToken(
+                issuer: _config["Jwt:Issuer"],
+                audience: _config["Jwt:Issuer"],
+                claims,
+                expires: DateTime.Now.AddMinutes(120),
+                signingCredentials: credentials);
+            var encodetoken = new JwtSecurityTokenHandler().WriteToken(token);
+            return encodetoken;
         }
     }
 }
