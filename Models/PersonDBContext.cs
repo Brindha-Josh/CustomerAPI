@@ -33,10 +33,16 @@ namespace CUSTOMERAPISQL.Models
                 entity.Property(e => e.Address)
                     .HasMaxLength(50)
                     .IsUnicode(false);
-
+                entity.Property(e => e.Token)
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
                 entity.Property(e => e.Name)
                     .HasMaxLength(50)
                     .IsUnicode(false);
+
+                entity.Property(e => e.Password).HasMaxLength(50);
+
+                entity.Property(e => e.UserName).HasMaxLength(50);
             });
 
             modelBuilder.Entity<Customers>(entity =>

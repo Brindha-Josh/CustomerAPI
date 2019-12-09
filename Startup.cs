@@ -32,51 +32,48 @@ namespace CUSTOMERAPISQL
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddCors(options =>
-            //{
-            //    options.AddDefaultPolicy(builder =>
-            //    {
-            //        builder.AllowAnyOrigin()
-            //        .AllowAnyMethod()
-            //        .AllowAnyHeader()
-            //        .AllowCredentials()
-            //        .Build();
-            //    });
-            //});
             services.AddCors(options =>
             {
-                options.AddPolicy("CorsPolicy", builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().Build());
+                options.AddPolicy("CorsPolicy",
+                    builder => builder.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    );
             });
-      
-        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                    .AddJwtBearer(token =>
-    {
-        token.RequireHttpsMetadata = false;
-        token.SaveToken = true;
-        token.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuerSigningKey = true,
-            //Same Secret key will be used while creating the token
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"])),
-            ValidateIssuer = true,
-            //Usually, this is your application base URL
-            ValidIssuer = Configuration["Jwt:Issuer"],
-            ValidateAudience = true,
-            
-            ValidAudience = Configuration["Jwt:Issuer"],
-            RequireExpirationTime = true,
-            ValidateLifetime = true,
-            ClockSkew = TimeSpan.Zero
-        };
-    });
-            services.AddMvc();
-            services.AddAuthentication(options => options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme);
+            //services.AddCors(options =>
+            //{
+            //    options.AddPolicy("CorsPolicy", builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().AllowCredentials().Build());
+            //});
 
-                       services.AddAuthentication().AddFacebook(facebookOptions =>
-            {
-                facebookOptions.AppId = Configuration["Authentication:Facebook:AppId"];
-                facebookOptions.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
-            });
+    //        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    //                .AddJwtBearer(token =>
+    //{
+    //    token.RequireHttpsMetadata = false;
+    //    token.SaveToken = true;
+    //    token.TokenValidationParameters = new TokenValidationParameters
+    //    {
+    //        ValidateIssuerSigningKey = true,
+    //                //Same Secret key will be used while creating the token
+    //                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"])),
+    //        ValidateIssuer = true,
+    //                //Usually, this is your application base URL
+    //                ValidIssuer = Configuration["Jwt:Issuer"],
+    //        ValidateAudience = true,
+
+    //        ValidAudience = Configuration["Jwt:Issuer"],
+    //        RequireExpirationTime = true,
+    //        ValidateLifetime = true,
+    //        ClockSkew = TimeSpan.Zero
+    //    };
+    //});
+            //services.AddMvc();
+            //services.AddAuthentication(options => options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme);
+
+            //           services.AddAuthentication().AddFacebook(facebookOptions =>
+            //{
+            //    facebookOptions.AppId = Configuration["Authentication:Facebook:AppId"];
+            //    facebookOptions.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
+            //});
             services.AddControllers();
             services.AddControllers().AddNewtonsoftJson();
             services.AddDbContext<PersonDBContext>(options =>
@@ -90,11 +87,11 @@ namespace CUSTOMERAPISQL
             {
                 app.UseDeveloperExceptionPage();
             }
-            app.UseCors();
+            app.UseCors("CorsPolicy");
             app.UseHttpsRedirection();
 
             app.UseRouting();
-          
+
             app.UseAuthentication();
             app.UseAuthorization();
 
