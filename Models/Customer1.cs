@@ -12,6 +12,6 @@ namespace CUSTOMERAPISQL.Models
 
         public string UserName { get; set; }
         public string Password { get; set; }
-        public string emailAdd { get; set; }
+        //public string emailAdd { get; set; }
     }
 }

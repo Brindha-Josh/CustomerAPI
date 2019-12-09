@@ -48,35 +48,35 @@ namespace CUSTOMERAPISQL
                 options.AddPolicy("CorsPolicy", builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().Build());
             });
       
-        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                    .AddJwtBearer(token =>
-    {
-        token.RequireHttpsMetadata = false;
-        token.SaveToken = true;
-        token.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuerSigningKey = true,
-            //Same Secret key will be used while creating the token
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"])),
-            ValidateIssuer = true,
-            //Usually, this is your application base URL
-            ValidIssuer = Configuration["Jwt:Issuer"],
-            ValidateAudience = true,
+    //    services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    //                .AddJwtBearer(token =>
+    //{
+    //    token.RequireHttpsMetadata = false;
+    //    token.SaveToken = true;
+    //    token.TokenValidationParameters = new TokenValidationParameters
+    //    {
+    //        ValidateIssuerSigningKey = true,
+    //        //Same Secret key will be used while creating the token
+    //        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"])),
+    //        ValidateIssuer = true,
+    //        //Usually, this is your application base URL
+    //        ValidIssuer = Configuration["Jwt:Issuer"],
+    //        ValidateAudience = true,
             
-            ValidAudience = Configuration["Jwt:Issuer"],
-            RequireExpirationTime = true,
-            ValidateLifetime = true,
-            ClockSkew = TimeSpan.Zero
-        };
-    });
+    //        ValidAudience = Configuration["Jwt:Issuer"],
+    //        RequireExpirationTime = true,
+    //        ValidateLifetime = true,
+    //        ClockSkew = TimeSpan.Zero
+    //    };
+    //});
             services.AddMvc();
-            services.AddAuthentication(options => options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme);
+            //services.AddAuthentication(options => options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme);
 
-                       services.AddAuthentication().AddFacebook(facebookOptions =>
-            {
-                facebookOptions.AppId = Configuration["Authentication:Facebook:AppId"];
-                facebookOptions.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
-            });
+            //           services.AddAuthentication().AddFacebook(facebookOptions =>
+            //{
+            //    facebookOptions.AppId = Configuration["Authentication:Facebook:AppId"];
+            //    facebookOptions.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
+            //});
             services.AddControllers();
             services.AddControllers().AddNewtonsoftJson();
             services.AddDbContext<PersonDBContext>(options =>
@@ -95,12 +95,15 @@ namespace CUSTOMERAPISQL
 
             app.UseRouting();
           
-            app.UseAuthentication();
+          //  app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers();
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller:Customer1}/{action:index}/{id?}");
+                                  endpoints.MapControllers();
             });
            
         }

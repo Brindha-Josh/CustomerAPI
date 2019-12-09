@@ -16,7 +16,7 @@ namespace CUSTOMERAPISQL.Models
         }
 
         public virtual DbSet<Customer1> Customer1 { get; set; }
-        public virtual DbSet<Customers> Customers { get; set; }
+      //  public virtual DbSet<Customers> Customers { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -39,28 +39,28 @@ namespace CUSTOMERAPISQL.Models
                     .IsUnicode(false);
             });
 
-            modelBuilder.Entity<Customers>(entity =>
-            {
-                entity.ToTable("CUSTOMERS");
+            //modelBuilder.Entity<Customers>(entity =>
+            //{
+            //    entity.ToTable("CUSTOMERS");
 
-                entity.Property(e => e.Id)
-                    .HasColumnName("ID")
-                    .ValueGeneratedNever();
+            //    entity.Property(e => e.Id)
+            //        .HasColumnName("ID")
+            //        .ValueGeneratedNever();
 
-                entity.Property(e => e.Address)
-                    .HasColumnName("ADDRESS")
-                    .HasMaxLength(25)
-                    .IsUnicode(false)
-                    .IsFixedLength();
+            //    entity.Property(e => e.Address)
+            //        .HasColumnName("ADDRESS")
+            //        .HasMaxLength(25)
+            //        .IsUnicode(false)
+            //        .IsFixedLength();
 
-                entity.Property(e => e.Age).HasColumnName("AGE");
+            //    entity.Property(e => e.Age).HasColumnName("AGE");
 
-                entity.Property(e => e.Name)
-                    .IsRequired()
-                    .HasColumnName("NAME")
-                    .HasMaxLength(20)
-                    .IsUnicode(false);
-            });
+            //    entity.Property(e => e.Name)
+            //        .IsRequired()
+            //        .HasColumnName("NAME")
+            //        .HasMaxLength(20)
+            //        .IsUnicode(false);
+            //});
 
             OnModelCreatingPartial(modelBuilder);
         }
