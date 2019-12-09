@@ -60,7 +60,7 @@ namespace CUSTOMERAPISQL.Controllers
         // GET: api/Customer1
         [AllowAnonymous]
         [HttpGet]
-        [Route("Customer1")]
+        [Route("")]
    
         public async Task<ActionResult<IEnumerable<Customer1>>> GetCustomer1()
         {
@@ -70,7 +70,7 @@ namespace CUSTOMERAPISQL.Controllers
         // GET: api/Customer1/5
         //Get Specific Person
         [HttpGet("{id}")]
-        [Route("Customer1/Details/{id}")]
+        [Route("Details/{id}")]
         [AllowAnonymous]
         public async Task<ActionResult<Customer1>> GetCustomer1(int id)
         {
@@ -89,7 +89,7 @@ namespace CUSTOMERAPISQL.Controllers
         // more details see https://aka.ms/RazorPagesCRUD.
        
         [HttpPut("{id}")]
-        [Route("Customer1/Edit/{id}")]
+        [Route("Edit/{id}")]
         [Authorize]
         public async Task<IActionResult> PutCustomer1(int id, Customer1 customer1)
         {
@@ -124,7 +124,7 @@ namespace CUSTOMERAPISQL.Controllers
         // more details see https://aka.ms/RazorPagesCRUD.
         
         [HttpPost]
-        [Route("Customer1/Create")]
+        [Route("Create")]
         [Authorize]
         public async Task<ActionResult<Customer1>> PostCustomer1(Customer1 customer1)
         {
@@ -137,7 +137,7 @@ namespace CUSTOMERAPISQL.Controllers
        
         // DELETE: api/Customer1/5
         [HttpDelete("{id}")]
-        [Route("Customer1/Del/{id}")]
+        [Route("Del/{id}")]
         [Authorize]
         public async Task<ActionResult<Customer1>> DeleteCustomer1(int id)
         {
