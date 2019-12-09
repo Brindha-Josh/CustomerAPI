@@ -5,8 +5,10 @@
     <UserSecretsId>ae817f4b-c49d-41a6-8137-4554223243a3</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="Controllers\CustomersController.cs" />
     <Compile Remove="Controllers\WeatherForecastController.cs" />
     <Compile Remove="Models\Customer.cs" />
+    <Compile Remove="Models\Customers.cs" />
     <Compile Remove="WeatherForecast.cs" />
   </ItemGroup>
   <ItemGroup>

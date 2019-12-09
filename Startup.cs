@@ -97,6 +97,9 @@ namespace CUSTOMERAPISQL
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Customer1}/{action=index}/{id?}");
                 endpoints.MapControllers();
             });
            
