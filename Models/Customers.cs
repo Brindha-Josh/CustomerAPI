@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CUSTOMERAPISQL.Models
 {
-    public partial class Customer1
+    public partial class Customers
     {
         public int Id { get; set; }
         public string Name { get; set; }

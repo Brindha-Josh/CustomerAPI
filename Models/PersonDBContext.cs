@@ -16,7 +16,7 @@ namespace CUSTOMERAPISQL.Models
         }
 
         public virtual DbSet<Customer1> Customer1 { get; set; }
-      //  public virtual DbSet<Customers> Customers { get; set; }
+        //public virtual DbSet<Customers> Customers { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
