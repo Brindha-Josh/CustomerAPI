@@ -16,7 +16,7 @@ using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegiste
 
 namespace CUSTOMERAPISQL.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class LoginController : ControllerBase
     {
@@ -61,7 +61,7 @@ namespace CUSTOMERAPISQL.Controllers
             };
             var token = new JwtSecurityToken(
                 issuer: _config["Jwt:Issuer"],
-                audience: _config["Jwt:Issuer"],
+                audience: _config["Jwt:Audience"],
                 claims,
                 expires: DateTime.Now.AddMinutes(120),
                 signingCredentials: credentials);
@@ -70,6 +70,7 @@ namespace CUSTOMERAPISQL.Controllers
         }
         [Authorize]
         [HttpPost("Post")]
+        
         public string Post()
         {
             var identity = HttpContext.User.Identity as ClaimsIdentity;
