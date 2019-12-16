@@ -19,9 +19,6 @@ namespace CUSTOMERAPISQL.Models
 
         //public virtual DbSet<Customers> Customers { get; set; }
 
-       // public virtual DbSet<Customers> Customers { get; set; }
-
-
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -37,7 +34,6 @@ namespace CUSTOMERAPISQL.Models
                 entity.Property(e => e.Address)
                     .HasMaxLength(50)
                     .IsUnicode(false);
-               
                 entity.Property(e => e.Name)
                     .HasMaxLength(50)
                     .IsUnicode(false);

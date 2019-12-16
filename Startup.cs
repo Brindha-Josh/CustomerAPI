@@ -36,8 +36,9 @@ namespace CUSTOMERAPISQL
         public void ConfigureServices(IServiceCollection services)
         {
 
+
                        services.AddControllersWithViews();
-            IdentityModelEventSource.ShowPII = true;
+                              IdentityModelEventSource.ShowPII = true;
             //services.AddCors(options =>
             //{
             //    options.AddDefaultPolicy(builder =>
@@ -62,6 +63,7 @@ namespace CUSTOMERAPISQL
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                         .AddJwtBearer(token =>
+
         {
             token.RequireHttpsMetadata = false;
             token.SaveToken = true;
@@ -81,7 +83,7 @@ namespace CUSTOMERAPISQL
                 ClockSkew = TimeSpan.Zero
             };
         });
-            services.AddMvc();
+                         services.AddMvc();
             services.AddAuthentication();
             //    services.AddAuthentication(options => options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme);
             //    //    options =>
@@ -89,6 +91,7 @@ namespace CUSTOMERAPISQL
             //    //        options.LoginPath = new PathString("/Signin-google");
             //    //        options.AccessDeniedPath = new PathString("/auth/denied");
             //    });
+
         //    services.AddAuthentication().AddGoogle(options =>
         //{
         //    IConfigurationSection googleAuthNSection =
@@ -106,6 +109,8 @@ namespace CUSTOMERAPISQL
         //        }
         //    };
         //});
+
+           
 
             //services.AddCors(options =>
             //{
@@ -178,7 +183,7 @@ namespace CUSTOMERAPISQL
 
                 endpoints.MapControllers();
             });
-           
+
         }
     }
 }

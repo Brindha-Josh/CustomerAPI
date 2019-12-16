@@ -70,7 +70,11 @@ namespace CUSTOMERAPISQL.Controllers
         }
         [Authorize]
         [HttpPost("Post")]
+<<<<<<< HEAD
         
+=======
+
+>>>>>>> master
         public string Post()
         {
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -79,4 +83,8 @@ namespace CUSTOMERAPISQL.Controllers
             return "Welcome To:" + username;
         }
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> master
