@@ -80,7 +80,7 @@ namespace CUSTOMERAPISQL
                 ValidAudience = Configuration["Jwt:Audience"],
                 RequireExpirationTime = true,
                 ValidateLifetime = true,
-                ClockSkew = TimeSpan.Zero
+               ClockSkew = TimeSpan.Zero
             };
         });
                          services.AddMvc();

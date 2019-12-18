@@ -61,10 +61,10 @@ namespace CUSTOMERAPISQL.Controllers
         //}
 
         // GET: api/Customer1
-        [AllowAnonymous]
+       
         [HttpGet]
         [Route("")]
-
+        [AllowAnonymous]
         public async Task<ActionResult<IEnumerable<Customer1>>> GetCustomer1()
         {
             return await _context.Customer1.ToListAsync();
@@ -82,7 +82,7 @@ namespace CUSTOMERAPISQL.Controllers
         [HttpGet("{id}")]
         
         [Route("Details/{id}")]
-        //[Authorize]
+      
         [AllowAnonymous]
         public async Task<ActionResult<Customer1>> GetCustomer1(int id)
         {
@@ -142,7 +142,7 @@ namespace CUSTOMERAPISQL.Controllers
         [HttpPost]
         [Route("Create")]
 
-       // [Authorize]
+        [Authorize]
 
         public async Task<ActionResult<Customer1>> PostCustomer1(Customer1 customer1)
         {
@@ -157,7 +157,7 @@ namespace CUSTOMERAPISQL.Controllers
         [HttpDelete("{id}")]
         [Route("Del/{id}")]
 
-       // [Authorize]
+        [Authorize]
 
         public async Task<ActionResult<Customer1>> DeleteCustomer1(int id)
         {

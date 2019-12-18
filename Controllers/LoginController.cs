@@ -9,10 +9,12 @@ using CUSTOMERAPISQL.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
-using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
+//using Microsoft.IdentityModel.JsonWebTokens;
+//using Microsoft.IdentityModel.Tokens;
+//using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
 
 namespace CUSTOMERAPISQL.Controllers
 {
@@ -21,12 +23,15 @@ namespace CUSTOMERAPISQL.Controllers
     public class LoginController : ControllerBase
     {
         private IConfiguration _config;
+        
         public LoginController(IConfiguration config)
         {
             _config = config;
+           
         }
+        
         [HttpGet]
-        public IActionResult Login(string username, string pass)
+               public IActionResult Login(string username, string pass)
         {
             UserModel login = new UserModel();
             login.UserName = username;
@@ -40,12 +45,13 @@ namespace CUSTOMERAPISQL.Controllers
             }
             return response;
         }
+       
         private UserModel AuthenticateUser(UserModel login)
         {
             UserModel user = null;
             if (login.UserName == "user" && login.Password == "user")
             {
-                user = new UserModel { UserName = "user", EmailAddress = "brindhamaniam@gmail.com", Password = "user" };
+                user = new UserModel { UserName = "user",  Password = "user", EmailAddress = "brindhamaniam@gmail.com" };
             }
             return user;
         }
@@ -61,20 +67,16 @@ namespace CUSTOMERAPISQL.Controllers
             };
             var token = new JwtSecurityToken(
                 issuer: _config["Jwt:Issuer"],
-                audience: _config["Jwt:Audience"],
+                audience: _config["Jwt:Issuer"],
                 claims,
                 expires: DateTime.Now.AddMinutes(120),
                 signingCredentials: credentials);
             var encodetoken = new JwtSecurityTokenHandler().WriteToken(token);
             return encodetoken;
-        }
-        [Authorize]
-        [HttpPost("Post")]
-<<<<<<< HEAD
-        
-=======
 
->>>>>>> master
+        }
+       //[Authorize]
+        [HttpPost("Post")]
         public string Post()
         {
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -82,9 +84,10 @@ namespace CUSTOMERAPISQL.Controllers
             var username = claim[0].Value;
             return "Welcome To:" + username;
         }
+        
     }
-<<<<<<< HEAD
+
 }
-=======
-}
->>>>>>> master
+
+
+
