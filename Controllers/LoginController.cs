@@ -5,37 +5,38 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using CUSTOMERAPISQL.Models;
+using CustomerMgmt.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-//using Microsoft.IdentityModel.JsonWebTokens;
-//using Microsoft.IdentityModel.Tokens;
-//using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
 
-namespace CUSTOMERAPISQL.Controllers
+
+namespace CustomerMgmt.Controllers
 {
     [Route("[controller]")]
     [ApiController]
     public class LoginController : ControllerBase
     {
-        private IConfiguration _config;
+        private readonly IConfiguration _config;
         
         public LoginController(IConfiguration config)
         {
             _config = config;
            
         }
-        
+
         [HttpGet]
-               public IActionResult Login(string username, string pass)
+        public IActionResult Login(string username, string pass)
         {
-            UserModel login = new UserModel();
-            login.UserName = username;
-            login.Password = pass;
+            UserModel login = new UserModel
+            {
+                UserName = username,
+                Password = pass
+        };
+            
             IActionResult response = Unauthorized();
             var user = AuthenticateUser(login);
             if (user != null)
@@ -51,7 +52,7 @@ namespace CUSTOMERAPISQL.Controllers
             UserModel user = null;
             if (login.UserName == "user" && login.Password == "user")
             {
-                user = new UserModel { UserName = "user",  Password = "user", EmailAddress = "brindhamaniam@gmail.com" };
+                user = new UserModel { UserName = "user",EmailAddress = "brindhamaniam@gmail.com",Password = "user" };
             }
             return user;
         }
@@ -75,8 +76,8 @@ namespace CUSTOMERAPISQL.Controllers
             return encodetoken;
 
         }
-       //[Authorize]
-        [HttpPost("Post")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        [HttpPost]
         public string Post()
         {
             var identity = HttpContext.User.Identity as ClaimsIdentity;

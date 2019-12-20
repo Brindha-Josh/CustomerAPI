@@ -7,7 +7,6 @@
   <ItemGroup>
     <Compile Remove="Controllers\CustomersController.cs" />
     <Compile Remove="Controllers\WeatherForecastController.cs" />
-    <Compile Remove="Models\Customer.cs" />
     <Compile Remove="Models\Customers.cs" />
     <Compile Remove="WeatherForecast.cs" />
   </ItemGroup>
@@ -17,7 +16,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="3.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.MicrosoftAccount" Version="3.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="3.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="3.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.0.0" />

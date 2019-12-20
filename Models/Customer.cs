@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace CUSTOMERAPISQL.Models
+namespace CustomerMgmt.Models
 {
-    public partial class Customer1
+    public partial class Customer
     {
         public int Id { get; set; }
         public string Name { get; set; }

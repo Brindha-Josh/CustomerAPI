@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using CUSTOMERAPISQL.Models;
+using CustomerMgmt.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -21,7 +21,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Logging;
 
-namespace CUSTOMERAPISQL
+namespace CustomerMgmt
 {
     public class Startup
     {
@@ -35,23 +35,11 @@ namespace CUSTOMERAPISQL
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.AddControllers();
 
                        services.AddControllersWithViews();
-                              IdentityModelEventSource.ShowPII = true;
-            //services.AddCors(options =>
-            //{
-            //    options.AddDefaultPolicy(builder =>
-            //    {
-            //        builder.AllowAnyOrigin()
-            //        .AllowAnyMethod()
-            //        .AllowAnyHeader()
-            //        .AllowCredentials()
-            //        .Build();
-            //    });
-            //});
-
-            services.AddCors(options =>
+                             // IdentityModelEventSource.ShowPII = true;
+                        services.AddCors(options =>
             {
                 options.AddPolicy("CorsPolicy",
                     builder => builder.AllowAnyOrigin()
@@ -65,26 +53,27 @@ namespace CUSTOMERAPISQL
                         .AddJwtBearer(token =>
 
         {
-            token.RequireHttpsMetadata = false;
+           token.RequireHttpsMetadata = false;
             token.SaveToken = true;
             token.TokenValidationParameters = new TokenValidationParameters
             {
-                ValidateIssuerSigningKey = true,
-            //Same Secret key will be used while creating the token
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"])),
                 ValidateIssuer = true,
-            //Usually, this is your application base URL
-            ValidIssuer = Configuration["Jwt:Issuer"],
                 ValidateAudience = true,
-
-                ValidAudience = Configuration["Jwt:Audience"],
-                RequireExpirationTime = true,
                 ValidateLifetime = true,
-               ClockSkew = TimeSpan.Zero
+                ValidateIssuerSigningKey = true,
+                //Usually, this is your application base URL
+                ValidIssuer = Configuration["Jwt:Issuer"],
+                ValidAudience = Configuration["Jwt:Issuer"],
+                //Same Secret key will be used while creating the token
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"])),
+                 
+               // RequireExpirationTime = true,
+                
+               //ClockSkew = TimeSpan.Zero
             };
         });
                          services.AddMvc();
-            services.AddAuthentication();
+           // services.AddAuthentication();
             //    services.AddAuthentication(options => options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme);
             //    //    options =>
             //    //    {
@@ -155,7 +144,7 @@ namespace CUSTOMERAPISQL
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {

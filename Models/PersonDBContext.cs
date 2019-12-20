@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace CUSTOMERAPISQL.Models
+namespace CustomerMgmt.Models
 {
     public partial class PersonDBContext : DbContext
     {
@@ -15,9 +15,7 @@ namespace CUSTOMERAPISQL.Models
         {
         }
 
-        public virtual DbSet<Customer1> Customer1 { get; set; }
-
-        //public virtual DbSet<Customers> Customers { get; set; }
+        public virtual DbSet<Customer> Customer { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -29,39 +27,16 @@ namespace CUSTOMERAPISQL.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Customer1>(entity =>
+            modelBuilder.Entity<Customer>(entity =>
             {
                 entity.Property(e => e.Address)
                     .HasMaxLength(50)
                     .IsUnicode(false);
+
                 entity.Property(e => e.Name)
                     .HasMaxLength(50)
                     .IsUnicode(false);
-
             });
-
-            //modelBuilder.Entity<Customers>(entity =>
-            //{
-            //    entity.ToTable("CUSTOMERS");
-
-            //    entity.Property(e => e.Id)
-            //        .HasColumnName("ID")
-            //        .ValueGeneratedNever();
-
-            //    entity.Property(e => e.Address)
-            //        .HasColumnName("ADDRESS")
-            //        .HasMaxLength(25)
-            //        .IsUnicode(false)
-            //        .IsFixedLength();
-
-            //    entity.Property(e => e.Age).HasColumnName("AGE");
-
-            //    entity.Property(e => e.Name)
-            //        .IsRequired()
-            //        .HasColumnName("NAME")
-            //        .HasMaxLength(20)
-            //        .IsUnicode(false);
-            //});
 
             OnModelCreatingPartial(modelBuilder);
         }
