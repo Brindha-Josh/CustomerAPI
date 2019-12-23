@@ -1,0 +1,49 @@
+﻿
+@model IEnumerable<CustomerMgmt.Models.Customer>
+@*
+    ViewData["Title"] = "Index";
+    Layout="~/Views/Shared/_Layout.cshtml";
+*@
+<h1>Home Page</h1>
+<p>
+    <a asp-action="Create">Create New Customer</a>
+</p>
+@*For Displaying Customer Info*@
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Age)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Address)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var cust in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => cust.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => cust.Age)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => cust.Address)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@cust.Id">Edit</a>
+                    <a asp-action="Details" asp-route-id="@cust.Id">Details</a>
+                    <a asp-action="Delete" asp-route-id="@cust.Id">Delete</a>
+                </td>
+            </tr>
+        }
+
+    </tbody>
+</table>

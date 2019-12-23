@@ -31,7 +31,7 @@ namespace CustomerMgmt.Controllers
         [HttpGet]
         public IActionResult Login(string username, string pass)
         {
-            UserModel login = new UserModel
+            User login = new User
             {
                 UserName = username,
                 Password = pass
@@ -47,16 +47,16 @@ namespace CustomerMgmt.Controllers
             return response;
         }
        
-        private UserModel AuthenticateUser(UserModel login)
+        private User AuthenticateUser(User login)
         {
-            UserModel user = null;
+            User user = null;
             if (login.UserName == "user" && login.Password == "user")
             {
-                user = new UserModel { UserName = "user",EmailAddress = "brindhamaniam@gmail.com",Password = "user" };
+                user = new User { UserName = "user",EmailAddress = "brindhamaniam@gmail.com",Password = "user" };
             }
             return user;
         }
-        private string GenerateJSONWebToken(UserModel userinfo)
+        private string GenerateJSONWebToken(User userinfo)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);

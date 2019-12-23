@@ -17,7 +17,7 @@ using Microsoft.AspNetCore.Identity;
 namespace CustomerMgmt.Controllers
 {
 
-    [Route("")]
+    [Route("Customer")]
     [ApiController]
     public class CustomerController : ControllerBase
     {

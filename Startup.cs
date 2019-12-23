@@ -37,23 +37,20 @@ namespace CustomerMgmt
         {
             services.AddControllers();
 
-                       services.AddControllersWithViews();
-                             // IdentityModelEventSource.ShowPII = true;
-                        services.AddCors(options =>
-            {
-                options.AddPolicy("CorsPolicy",
-                    builder => builder.AllowAnyOrigin()
-                    .AllowAnyMethod()
-                    .AllowAnyHeader()
-                    );
-            });
-
-
+            services.AddControllersWithViews();
+            services.AddCors(options =>
+        {
+            options.AddPolicy("CorsPolicy",
+                builder => builder.AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                );
+        });
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                         .AddJwtBearer(token =>
 
         {
-           token.RequireHttpsMetadata = false;
+            token.RequireHttpsMetadata = false;
             token.SaveToken = true;
             token.TokenValidationParameters = new TokenValidationParameters
             {
@@ -61,89 +58,21 @@ namespace CustomerMgmt
                 ValidateAudience = true,
                 ValidateLifetime = true,
                 ValidateIssuerSigningKey = true,
-                //Usually, this is your application base URL
                 ValidIssuer = Configuration["Jwt:Issuer"],
                 ValidAudience = Configuration["Jwt:Issuer"],
-                //Same Secret key will be used while creating the token
+
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"])),
-                 
-               // RequireExpirationTime = true,
-                
-               //ClockSkew = TimeSpan.Zero
+
             };
         });
-                         services.AddMvc();
-           // services.AddAuthentication();
-            //    services.AddAuthentication(options => options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme);
-            //    //    options =>
-            //    //    {
-            //    //        options.LoginPath = new PathString("/Signin-google");
-            //    //        options.AccessDeniedPath = new PathString("/auth/denied");
-            //    });
+            services.AddMvc();
 
-        //    services.AddAuthentication().AddGoogle(options =>
-        //{
-        //    IConfigurationSection googleAuthNSection =
-        //        Configuration.GetSection("Authentication:Google");
-
-        //    options.ClientId = googleAuthNSection["ClientId"];
-        //    options.ClientSecret = googleAuthNSection["ClientSecret"];
-        //    options.Events = new Microsoft.AspNetCore.Authentication.OAuth.OAuthEvents()
-        //    {
-        //        OnRemoteFailure = LoginFailureHandler =>
-        //        {
-        //            var authProperties = options.StateDataFormat.Unprotect(LoginFailureHandler.Request.Query["state"]);
-        //            LoginFailureHandler.Response.Redirect("/Identity/Account/Login");
-        //            return Task.FromResult(0);
-        //        }
-        //    };
-        //});
-
-           
-
-            //services.AddCors(options =>
-            //{
-            //    options.AddPolicy("CorsPolicy", builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().AllowCredentials().Build());
-            //});
-
-            //        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            //                .AddJwtBearer(token =>
-            //{
-            //    token.RequireHttpsMetadata = false;
-            //    token.SaveToken = true;
-            //    token.TokenValidationParameters = new TokenValidationParameters
-            //    {
-            //        ValidateIssuerSigningKey = true,
-            //                //Same Secret key will be used while creating the token
-            //                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"])),
-            //        ValidateIssuer = true,
-            //                //Usually, this is your application base URL
-            //                ValidIssuer = Configuration["Jwt:Issuer"],
-            //        ValidateAudience = true,
-
-            //        ValidAudience = Configuration["Jwt:Issuer"],
-            //        RequireExpirationTime = true,
-            //        ValidateLifetime = true,
-            //        ClockSkew = TimeSpan.Zero
-            //    };
-            //});
-            //services.AddMvc();
-
-            //services.AddAuthentication(options => options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme);
-
-            //           services.AddAuthentication().AddFacebook(facebookOptions =>
-            //{
-            //    facebookOptions.AppId = Configuration["Authentication:Facebook:AppId"];
-            //    facebookOptions.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
-            //});
             services.AddControllers();
-            //services.AddControllersWithViews();
+            services.AddControllersWithViews();
             services.AddControllers().AddNewtonsoftJson();
             services.AddDbContext<PersonDBContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("PersonDB")));
         }
-
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -160,17 +89,13 @@ namespace CustomerMgmt
             //app.UseMvc();
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapDefaultControllerRoute();
 
-                //endpoints.MapDefaultControllerRoute();
                 //endpoints.MapControllerRoute(
                 //    name: "default",
-                //    pattern: "{controller:Customer1}/{action:index}/{id?}");
+                //    pattern: "{controller=Customer}/{action=index}/{id?}");
 
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Customer1}/{action=index}/{id?}");
-
-                endpoints.MapControllers();
+                //endpoints.MapControllers();
             });
 
         }
