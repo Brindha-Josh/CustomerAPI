@@ -36,74 +36,33 @@ namespace CustomerMgmt
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
-
-            services.AddControllersWithViews();
             services.AddCors(options =>
-        {
-            options.AddPolicy("CorsPolicy",
-                builder => builder.AllowAnyOrigin()
-                .AllowAnyMethod()
-                .AllowAnyHeader()
-                );
-        });
-            //services.AddAuthentication().AddFacebook(facebookOptions =>
-            //{
-            //    facebookOptions.AppId = Configuration["Authentication:Facebook:AppId"];
-            //    facebookOptions.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
-            //});
-            //services.AddAuthentication(options =>
-            //{
-            //    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-            //    options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
-            //})
-            //.AddCookie()
-            //.AddGoogle(options =>
-            //{
-            //    options.ClientId = Configuration["Authentication:Google:ClientId"];
-            //    options.ClientSecret = Configuration["Authentication:Google:ClientSecret"];
-            //});
-            //    services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            //                .AddJwtBearer(token =>
+            {
+                options.AddPolicy("CorsPolicy",
+                    builder => builder.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    );
+            });
 
-            //{
-            //    token.RequireHttpsMetadata = false;
-            //    token.SaveToken = true;
-            //    token.TokenValidationParameters = new TokenValidationParameters
-            //    {
-            //        ValidateIssuer = true,
-            //        ValidateAudience = true,
-            //        ValidateLifetime = true,
-            //        ValidateIssuerSigningKey = true,
-            //        ValidIssuer = Configuration["Jwt:Issuer"],
-            //        ValidAudience = Configuration["Jwt:Issuer"],
-
-            //        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"])),
-
-            //    };
-            //});
-            services.AddMvc();
-
-            services.AddControllers();
             services.AddControllersWithViews();
-            services.AddControllers().AddNewtonsoftJson();
             services.AddDbContext<PersonDBContext>(options =>
-            options.UseSqlServer(Configuration.GetConnectionString("PersonDB")));
+                options.UseSqlServer(Configuration.GetConnectionString("PersonDB"))
+            );
         }
+
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
+
             app.UseCors("CorsPolicy");
             app.UseHttpsRedirection();
 
             app.UseRouting();
-
-            //app.UseAuthorization();
-            //app.UseAuthentication();
-            //app.UseMvc();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapDefaultControllerRoute();

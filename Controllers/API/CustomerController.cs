@@ -15,10 +15,10 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 
-namespace CustomerMgmt.Controllers
+namespace CustomerMgmt.Controllers.API
 {
 
-    [Route("Customer")]
+    [Route("api/Customer")]
     [ApiController]
     public class CustomerController : ControllerBase
     {
