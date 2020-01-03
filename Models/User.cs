@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CUSTOMERAPISQL.Models
+namespace CustomerMgmt.Models
 {
-    public class UserModel
+    public class User
     {
         public string UserName { get; set; }
         public string Password { get; set; }

@@ -5,32 +5,38 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using CUSTOMERAPISQL.Models;
+using CustomerMgmt.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
-using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
 
-namespace CUSTOMERAPISQL.Controllers
+
+namespace CustomerMgmt.Controllers
 {
     [Route("[controller]")]
     [ApiController]
     public class LoginController : ControllerBase
     {
-        private IConfiguration _config;
+        private readonly IConfiguration _config;
+        
         public LoginController(IConfiguration config)
         {
             _config = config;
+           
         }
+
         [HttpGet]
         public IActionResult Login(string username, string pass)
         {
-            UserModel login = new UserModel();
-            login.UserName = username;
-            login.Password = pass;
+            User login = new User
+            {
+                UserName = username,
+                Password = pass
+        };
+            
             IActionResult response = Unauthorized();
             var user = AuthenticateUser(login);
             if (user != null)
@@ -40,16 +46,17 @@ namespace CUSTOMERAPISQL.Controllers
             }
             return response;
         }
-        private UserModel AuthenticateUser(UserModel login)
+       
+        private User AuthenticateUser(User login)
         {
-            UserModel user = null;
+            User user = null;
             if (login.UserName == "user" && login.Password == "user")
             {
-                user = new UserModel { UserName = "user", EmailAddress = "brindhamaniam@gmail.com", Password = "user" };
+                user = new User { UserName = "user",EmailAddress = "brindhamaniam@gmail.com",Password = "user" };
             }
             return user;
         }
-        private string GenerateJSONWebToken(UserModel userinfo)
+        private string GenerateJSONWebToken(User userinfo)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
@@ -61,16 +68,16 @@ namespace CUSTOMERAPISQL.Controllers
             };
             var token = new JwtSecurityToken(
                 issuer: _config["Jwt:Issuer"],
-                audience: _config["Jwt:Audience"],
+                audience: _config["Jwt:Issuer"],
                 claims,
                 expires: DateTime.Now.AddMinutes(120),
                 signingCredentials: credentials);
             var encodetoken = new JwtSecurityTokenHandler().WriteToken(token);
             return encodetoken;
-        }
-        [Authorize]
-        [HttpPost("Post")]
 
+        }
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        [HttpPost]
         public string Post()
         {
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -78,5 +85,10 @@ namespace CUSTOMERAPISQL.Controllers
             var username = claim[0].Value;
             return "Welcome To:" + username;
         }
+        
     }
+
 }
+
+
+
