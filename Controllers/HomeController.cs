@@ -12,46 +12,46 @@ namespace CustomerMgmt.Controllers
 {
     public class HomeController : Controller
     {
-        public CustomerData customerData = new CustomerData();
-        public Customer customer = new Customer();
+        private readonly PersonDBContext _context;
         public HomeController(PersonDBContext context)
         {
 
             _context = context;
 
         }
-        private readonly PersonDBContext _context;
+
         [AllowAnonymous]
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public  async Task<IActionResult> Index()
         {
-            List<Customer> cusList = new List<Customer>();
-            cusList = _context.Customer.ToList();
+            var cusList = await _context.Customer.ToListAsync();
             return View(cusList);
         }
-        // [HttpGet]
+
+
         public IActionResult Create()
         {
             return View();
         }
-       // [Authorize]
+        
+       
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult<Customer>> Create(Customer customer)
         {
-            //await HttpContext.SignOutAsync();
+            
             _context.Customer.Add(customer);
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
         }
-        //[Authorize]
+       
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
-
                 return NotFound();
             }
+
             var customer = await _context.Customer.FindAsync(id);
             if (customer == null)
             {
@@ -59,7 +59,7 @@ namespace CustomerMgmt.Controllers
             }
             return View(customer);
         }
-       // [Authorize]
+       
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, Customer customer)
@@ -76,20 +76,20 @@ namespace CustomerMgmt.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!CustomerExists(id))
+                if (!_context.Customer.Any(e => e.Id == id))
                 {
                     return NotFound();
                 }
                 else
                 {
                     return RedirectToAction("Index");
-                    throw;
                 }
             }
             return RedirectToAction("Index");
-            //return View(customer);
+           
 
         }
+
         [HttpGet]
         public async Task<ActionResult<Customer>> Details(int id)
         {
@@ -104,32 +104,31 @@ namespace CustomerMgmt.Controllers
             return View(customer);
 
         }
+
         public async Task<ActionResult<Customer>> Delete(int? id)
         {
             if (id == null)
             {
-
                 return NotFound();
             }
+
             var customer = await _context.Customer.FindAsync(id);
             if (customer == null)
             {
                 return NotFound();
             }
+            
             return View(customer);
         }
+
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteCustAsync(int? id)
+        public async Task<IActionResult> DeleteCustomerAsync(int? id)
         {
             var customer = await _context.Customer.FindAsync(id);
             _context.Customer.Remove(customer);
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
-        }
-        private bool CustomerExists(int id)
-        {
-            return _context.Customer.Any(e => e.Id == id);
         }
 
     }
