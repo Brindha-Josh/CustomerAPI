@@ -7,6 +7,7 @@ namespace CustomerMgmt.Models
     public partial class Customer
     {
         public int Id { get; set; }
+
         [Required]
         public string Name { get; set; }
        

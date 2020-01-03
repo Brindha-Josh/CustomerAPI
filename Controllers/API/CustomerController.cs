@@ -22,53 +22,37 @@ namespace CustomerMgmt.Controllers.API
     [ApiController]
     public class CustomerController : ControllerBase
     {
-
+        private readonly PersonDBContext _context;
         public CustomerController(PersonDBContext context)
         {
-
             _context = context;
-
         }
-        private readonly PersonDBContext _context;
 
         // GET: Customer1
+
         [AllowAnonymous]
         [HttpGet]
-
         public async Task<ActionResult<IEnumerable<Customer>>> GetCustomer()
         {
             return await _context.Customer.ToListAsync();
         }
 
-
-
-
-        // GET: Customer1/5
-        //Get Specific Person
         [HttpGet("{id}")]
-        // [Route("Details/{id}")]
-
         [AllowAnonymous]
         public async Task<ActionResult<Customer>> GetCustomer(int id)
         {
-
             var customer = await _context.Customer.FindAsync(id);
-
             if (customer== null)
             {
                 return NotFound();
             }
 
             return customer;
-
         }
 
         // PUT: Customer1/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://aka.ms/RazorPagesCRUD.
         [Authorize(AuthenticationSchemes = "Bearer")]
         [HttpPut("{id}")]
-        // [Route("Edit/{id}")]
         public async Task<IActionResult> PutCustomer(int id, Customer customer)
         {
             if (id != customer.Id)
@@ -97,27 +81,18 @@ namespace CustomerMgmt.Controllers.API
             return NoContent();
         }
 
-        // POST: Customer1
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://aka.ms/RazorPagesCRUD.
         [Authorize(AuthenticationSchemes = "Bearer")]
         [HttpPost]
-        //[Route("Create")]
         public async Task<ActionResult<Customer>> PostCustomer(Customer customer)
         {
             _context.Customer.Add(customer);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetCustomer", new { id = customer.Id }, customer);
-
         }
 
-        // DELETE: Customer1/5
         [HttpDelete("{id}")]
-        // [Route("Del/{id}")]
-
         [Authorize(AuthenticationSchemes = "Bearer")]
-
         public async Task<ActionResult<Customer>> DeleteCustomer(int id)
         {
             var customer = await _context.Customer.FindAsync(id);
