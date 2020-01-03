@@ -14,6 +14,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
+
 namespace CustomerMgmt.Controllers
 {
 
@@ -33,11 +34,14 @@ namespace CustomerMgmt.Controllers
         // GET: Customer1
         [AllowAnonymous]
         [HttpGet]
-        //[Route("")]
+
         public async Task<ActionResult<IEnumerable<Customer>>> GetCustomer()
         {
             return await _context.Customer.ToListAsync();
         }
+
+
+
 
         // GET: Customer1/5
         //Get Specific Person

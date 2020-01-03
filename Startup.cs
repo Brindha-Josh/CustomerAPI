@@ -20,6 +20,8 @@ using System.Text;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Logging;
+using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Authentication.Facebook;
 
 namespace CustomerMgmt
 {
@@ -46,25 +48,53 @@ namespace CustomerMgmt
                 .AllowAnyHeader()
                 );
         });
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                        .AddJwtBearer(token =>
-
+            //services.AddAuthentication().AddFacebook(facebookOptions =>
+            //{
+            //    facebookOptions.AppId = Configuration["Authentication:Facebook:AppId"];
+            //    facebookOptions.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
+            //});
+            //     services.AddAuthentication(options =>
+            //     {
+            //         options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            //         options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+            //     })
+            //.AddCookie()
+            //.AddFacebook(options =>
+            //{
+            //    options.ClientId = Configuration["Authentication:Facebook:AppId"];
+            //    options.ClientSecret = Configuration["Authentication:Facebook:AppSecret"];
+            //});
+         
+            services.AddAuthentication(options =>
         {
-            token.RequireHttpsMetadata = false;
-            token.SaveToken = true;
-            token.TokenValidationParameters = new TokenValidationParameters
-            {
-                ValidateIssuer = true,
-                ValidateAudience = true,
-                ValidateLifetime = true,
-                ValidateIssuerSigningKey = true,
-                ValidIssuer = Configuration["Jwt:Issuer"],
-                ValidAudience = Configuration["Jwt:Issuer"],
-
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"])),
-
-            };
+            options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+        })
+        .AddCookie()
+        .AddGoogle(options =>
+        {
+            options.ClientId = Configuration["Authentication:Google:ClientId"];
+            options.ClientSecret = Configuration["Authentication:Google:ClientSecret"];
         });
+            //    services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            //                .AddJwtBearer(token =>
+
+            //{
+            //    token.RequireHttpsMetadata = false;
+            //    token.SaveToken = true;
+            //    token.TokenValidationParameters = new TokenValidationParameters
+            //    {
+            //        ValidateIssuer = true,
+            //        ValidateAudience = true,
+            //        ValidateLifetime = true,
+            //        ValidateIssuerSigningKey = true,
+            //        ValidIssuer = Configuration["Jwt:Issuer"],
+            //        ValidAudience = Configuration["Jwt:Issuer"],
+
+            //        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"])),
+
+            //    };
+            //});
             services.AddMvc();
 
             services.AddControllers();
