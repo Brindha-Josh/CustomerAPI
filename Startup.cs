@@ -34,7 +34,6 @@ namespace CustomerMgmt
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
@@ -53,29 +52,17 @@ namespace CustomerMgmt
             //    facebookOptions.AppId = Configuration["Authentication:Facebook:AppId"];
             //    facebookOptions.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
             //});
-            //     services.AddAuthentication(options =>
-            //     {
-            //         options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-            //         options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
-            //     })
-            //.AddCookie()
-            //.AddFacebook(options =>
+            //services.AddAuthentication(options =>
             //{
-            //    options.ClientId = Configuration["Authentication:Facebook:AppId"];
-            //    options.ClientSecret = Configuration["Authentication:Facebook:AppSecret"];
+            //    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            //    options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+            //})
+            //.AddCookie()
+            //.AddGoogle(options =>
+            //{
+            //    options.ClientId = Configuration["Authentication:Google:ClientId"];
+            //    options.ClientSecret = Configuration["Authentication:Google:ClientSecret"];
             //});
-         
-            services.AddAuthentication(options =>
-        {
-            options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-            options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
-        })
-        .AddCookie()
-        .AddGoogle(options =>
-        {
-            options.ClientId = Configuration["Authentication:Google:ClientId"];
-            options.ClientSecret = Configuration["Authentication:Google:ClientSecret"];
-        });
             //    services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             //                .AddJwtBearer(token =>
 
@@ -114,18 +101,12 @@ namespace CustomerMgmt
 
             app.UseRouting();
 
-            app.UseAuthorization();
-            app.UseAuthentication();
+            //app.UseAuthorization();
+            //app.UseAuthentication();
             //app.UseMvc();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapDefaultControllerRoute();
-
-                //endpoints.MapControllerRoute(
-                //    name: "default",
-                //    pattern: "{controller=Customer}/{action=index}/{id?}");
-
-                //endpoints.MapControllers();
             });
 
         }
