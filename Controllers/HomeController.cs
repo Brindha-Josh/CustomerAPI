@@ -1,17 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using CustomerMgmt.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Data;
+using System.Data.SqlClient;
+
 
 namespace CustomerMgmt.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly DbCountry db = new DbCountry();
         private readonly PersonDBContext _context;
         public HomeController(PersonDBContext context)
         {
@@ -31,10 +37,39 @@ namespace CustomerMgmt.Controllers
 
         public IActionResult Create()
         {
+            DataSet ds = db.GetCountry();
+            List<SelectListItem> list = new List<SelectListItem>();
+            foreach (DataRow dr in ds.Tables[0].Rows)
+            {
+                list.Add(new SelectListItem { Text = dr["CountryName"].ToString(), Value = dr["CountryName"].ToString() });
+            }
+            ViewBag.CountryList = list;
+            //List<string> CountryList = new List<string>();
+            //CultureInfo[] CInfoList = CultureInfo.GetCultures(CultureTypes.SpecificCultures);
+            //foreach (CultureInfo CInfo in CInfoList)
+            //{
+            //    RegionInfo R = new RegionInfo(CInfo.LCID);
+            //    if (!(CountryList.Contains(R.EnglishName)))
+            //    {
+            //        CountryList.Add(R.EnglishName);
+            //    }
+            //}
+
+            //CountryList.Sort();
+            //ViewBag.CountryList = CountryList;
             return View();
         }
-        
-       
+        public JsonResult GetCityList(string CountryName)
+        {
+            DataSet ds = db.GetCity(CountryName);
+            List<SelectListItem> list = new List<SelectListItem>();
+            foreach (DataRow dr in ds.Tables[0].Rows)
+            {
+                list.Add(new SelectListItem { Text = dr["CityName"].ToString(), Value = dr["CityName"].ToString() });
+            }
+            return Json(list);
+        }
+       // [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult<Customer>> Create(Customer customer)
@@ -44,7 +79,8 @@ namespace CustomerMgmt.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
         }
-       
+
+       // [Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)

@@ -1,9 +1,11 @@
 ﻿@model CustomerMgmt.Models.Customer
 @{
     ViewData["Title"] = "Edit";
-    Layout="~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 
 }
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize]
 
 <h1>Edit</h1>
 
