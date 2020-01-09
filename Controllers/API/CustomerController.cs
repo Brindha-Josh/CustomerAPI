@@ -18,7 +18,7 @@ using Microsoft.AspNetCore.Identity;
 namespace CustomerMgmt.Controllers.API
 {
 
-    [Route("api/Customer")]
+    
     [ApiController]
     public class CustomerController : ControllerBase
     {
@@ -29,7 +29,7 @@ namespace CustomerMgmt.Controllers.API
         }
 
         // GET: Customer1
-
+        [Route("api/Customer")]
         [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Customer>>> GetCustomer()
@@ -37,6 +37,7 @@ namespace CustomerMgmt.Controllers.API
             return await _context.Customer.ToListAsync();
         }
 
+        [Route("api/Customer/Details")]
         [HttpGet("{id}")]
         [AllowAnonymous]
         public async Task<ActionResult<Customer>> GetCustomer(int id)
@@ -50,8 +51,9 @@ namespace CustomerMgmt.Controllers.API
             return customer;
         }
 
+        [Route("api/Customer/Edit/{id}")]
         // PUT: Customer1/5
-        [Authorize(AuthenticationSchemes = "Bearer")]
+        // [Authorize(AuthenticationSchemes = "Bearer")]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCustomer(int id, Customer customer)
         {
@@ -81,7 +83,8 @@ namespace CustomerMgmt.Controllers.API
             return NoContent();
         }
 
-        [Authorize(AuthenticationSchemes = "Bearer")]
+        [Route("api/Customer/Add")]
+        // [Authorize(AuthenticationSchemes = "Bearer")]
         [HttpPost]
         public async Task<ActionResult<Customer>> PostCustomer(Customer customer)
         {
@@ -91,8 +94,9 @@ namespace CustomerMgmt.Controllers.API
             return CreatedAtAction("GetCustomer", new { id = customer.Id }, customer);
         }
 
+        [Route("api/Customer/Del/{id}")]
         [HttpDelete("{id}")]
-        [Authorize(AuthenticationSchemes = "Bearer")]
+       // [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<ActionResult<Customer>> DeleteCustomer(int id)
         {
             var customer = await _context.Customer.FindAsync(id);
